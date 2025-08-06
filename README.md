@@ -1,3 +1,6 @@
+# bitBooks
+A personal project where books from Google's API is fetched and displayed in a website.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
