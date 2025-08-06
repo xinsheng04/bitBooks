@@ -1,0 +1,82 @@
+.bitbooks-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* background: linear-gradient(
+    to top left,
+    #87b5fe,
+    #6aff8b,
+  ); */
+  background: linear-gradient(
+    rgb(255, 255, 255),
+    #c9c9c9
+  );
+  display: grid;
+  grid-template-columns: auto 1fr;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.header-titles {
+  display: flex;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.logo-link img {
+  height: 4rem;
+  width: auto;
+  margin-left: 2rem;
+}
+
+.logo-link .title,
+.header-titles .slogan {
+  flex-grow: 1;
+  margin: 0.5rem 0rem;
+}
+
+.logo-link .title{
+  font-size: 3rem;
+  color: black;
+  align-self: center;
+  margin-left: 0.25rem;
+  margin-right: 2rem;
+}
+
+
+.header-titles .slogan {
+  font-size: 2rem;
+  color: rgb(0, 0, 0);
+  align-self: flex-end;
+}
+
+header .nav-links {
+  max-width: 50%;
+  list-style: none;
+  display: grid;
+  align-items: end;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 5rem;
+}
+
+header li a {
+  text-decoration: none;
+  font-size: 1.7rem;
+  color: black;
+  font-weight: lighter;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+header li a:hover {
+  background-color:  #0077cc;
+  color: #f0f0f0;
+}
