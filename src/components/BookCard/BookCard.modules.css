@@ -1,0 +1,10 @@
+.bookCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 0.5rem;
+  background-color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}

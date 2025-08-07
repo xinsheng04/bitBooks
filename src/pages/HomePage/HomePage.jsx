@@ -1,11 +1,16 @@
-
+import { useSelector } from 'react-redux';
 export default function HomePage(){
-
+  const books = useSelector(state => state.books.items);
+  if(!books || books.length === 0){
+    throw new Error({
+      title: "Book retrieval error",
+      message: 'Error: No books retrieved from the API.',
+      status: 404
+    });
+  }
   return(
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p>{error.message}</p>}
-      {data && data.items.map(book => (
+      {books && books.items.map(book => (
         <div key={book.id}>
           <h2>{book.volumeInfo.title}</h2>
           <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>

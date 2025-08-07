@@ -1,0 +1,18 @@
+.ErrorPage {
+  text-align: center;
+}
+
+.ErrorPage h1 {
+  font-size: 2rem;
+  color: #ff0000;
+}
+
+.ErrorPage h2 {
+  font-size: 1.5rem;
+  color: #ff0000;
+}
+
+.ErrorPage p {
+  font-size: 1rem;
+  color: #333;
+}
