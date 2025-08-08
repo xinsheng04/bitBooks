@@ -21,13 +21,13 @@ import styles from './BookDetailsPage.module.css';
 */
 export default function BookDetailsPage(){
   const { bookId } = useParams();
-  const book = useSelector(state=> state.books.items.find(b => b.id === bookId));
+  const book = useSelector(state=> state.fetchedBooks.books.find(b => b.id === bookId));
   if (!book) {
-    throw new Error({
+    throw {
       title: "Book not found",
       message: `No book found with ID: ${bookId}`,
       status: 404
-    });
+    };
   }
   return (
     <div>

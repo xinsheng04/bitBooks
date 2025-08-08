@@ -1,11 +1,11 @@
 export default function processBooks(apiResponse){
   if(!apiResponse || !apiResponse.items){
-    throw new Error({
+    throw {
       title: "API Response Error",
       message: "Failed to process books from the API response.",
       status: 500,
       data: apiResponse
-    })
+    };
   }
   return apiResponse.items.map(book => {
     if(!book.volumeInfo || !book.id){
@@ -13,20 +13,20 @@ export default function processBooks(apiResponse){
     }
     return {
       id: book.id,
-      title: book.volumeInfo.title || 'No Title Available',
-      subtitle: book.volumeInfo.subtitle || 'No Subtitle Available',
-      authors: book.volumeInfo.authors.join(', ') || 'Unknown Author',
-      publisher: book.volumeInfo.publisher || 'Unknown Publisher',
-      publishedDate: book.volumeInfo.publishedDate || 'Unknown Date',
-      description: book.volumeInfo.description || 'No Description Available',
+      title: book.volumeInfo.title || null,
+      subtitle: book.volumeInfo.subtitle || null,
+      authors: Array.isArray(book.volumeInfo.authors) ? book.volumeInfo.authors.join(', ') : null,
+      publisher: book.volumeInfo.publisher || null,
+      publishedDate: book.volumeInfo.publishedDate || null,
+      description: book.volumeInfo.description || null,
       pageCount: book.volumeInfo.pageCount || 0,
-      categories: book.volumeInfo.categories.join(', ') || 'Uncategorized',
-      averageRating: book.volumeInfo.averageRating || 'No Rating',
+      categories: Array.isArray(book.volumeInfo.categories) ? book.volumeInfo.categories.join(', ') : null,
+      averageRating: book.volumeInfo.averageRating || null,
       ratingsCount: book.volumeInfo.ratingsCount || 0,
-      contentVersion: book.volumeInfo.contentVersion || 'No Version Available',
-      language: book.volumeInfo.language || 'Unknown Language',
-      previewLink: book.volumeInfo.previewLink || 'No Preview Available',
-      infoLink: book.volumeInfo.infoLink || 'No Info Available',
+      contentVersion: book.volumeInfo.contentVersion || null,
+      language: book.volumeInfo.language || null,
+      previewLink: book.volumeInfo.previewLink || null,
+      infoLink: book.volumeInfo.infoLink || null,
       imageLinks: book.volumeInfo.imageLinks || {
         thumbnail: 'https://via.placeholder.com/128x194?text=No+Image+Available'
       }

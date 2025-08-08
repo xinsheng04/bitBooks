@@ -2,7 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { useEffect } from 'react';
 import useHttp from './util/useHttp';
 import processBooks from './util/processBooks';
-import {useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { fetchedBooksActions } from './store/fetchedBooks.js';
 import RootLayout from './RootLayout';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/SearchPage';
@@ -12,7 +13,7 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import './App.css'
 
 const apiKey = import.meta.env.VITE_API_KEY;
-const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=a&maxResults=40&key=${apiKey}`;
+const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=a&maxResults=30&key=${apiKey}`;
 const config = {
   method: 'GET',
   headers: {
@@ -25,15 +26,11 @@ function App() {
   const {data, error, loading} = useHttp(apiUrl, config, 'Book fetching failed');
   useEffect(()=>{
     if (data && !loading && !error) {
-      dispatch(fetchedBooksActions.loadBooks(processBooks(data)));
+      const processedBooks = processBooks(data);
+      // console.log(processedBooks);
+      dispatch(fetchedBooksActions.loadBooks(processedBooks));
     }
   }, [data, loading, error, dispatch]);
-  if(loading){
-    return <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>;
-  }
-  if(error){
-    return <ErrorPage error={{title: 'Failed to fetch books', message: error.message, status: 500}} />;
-  }
   const routes = createBrowserRouter([
     {
       path:'/',
@@ -49,7 +46,11 @@ function App() {
     }
   ]);
   return (
-    <RouterProvider router={routes}/>
+    <>
+      {loading && <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>}
+      {error && <div style={{textAlign: 'center', marginTop: '50vh'}}>Error: {error.message}</div>}
+      <RouterProvider router={routes}/>
+    </>
   )
 }
 

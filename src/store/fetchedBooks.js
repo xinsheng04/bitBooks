@@ -11,6 +11,7 @@ description: string,
 */
 const initialState = {
   books: [],
+  isLoading: true
 }
 
 const fetchedBooksSlice = createSlice({
@@ -19,6 +20,7 @@ const fetchedBooksSlice = createSlice({
   reducers: {
     loadBooks(state, action){
       state.books = action.payload;
+      state.isLoading = false;
     },
     updateBook(state, action){
       // copilot's logic for updating a book, might be updated later depending on my implementation 

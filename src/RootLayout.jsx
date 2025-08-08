@@ -4,7 +4,9 @@ export default function RootLayout(){
   return(
     <>
       <Header />
-      <Outlet />
+      <div style={{ marginTop: '10vh' }}>
+        <Outlet />
+      </div>
     </>
   )
 }

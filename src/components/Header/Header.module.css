@@ -11,6 +11,7 @@
   grid-template-columns: auto 1fr;
   padding: 0.5rem 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  height: 9vh;
   z-index: 1000;
 }
 

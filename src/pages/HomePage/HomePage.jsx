@@ -1,23 +1,22 @@
 import { useSelector } from 'react-redux';
+import styles from './HomePage.module.css';
+import BookCard from '../../components/BookCard/BookCard';
 export default function HomePage(){
-  const books = useSelector(state => state.books.items);
-  if(!books || books.length === 0){
-    throw new Error({
-      title: "Book retrieval error",
-      message: 'Error: No books retrieved from the API.',
-      status: 404
-    });
+  const books = useSelector(state => state.fetchedBooks.books);
+  const isLoading = useSelector(state => state.fetchedBooks.isLoading);
+  if(isLoading) {
+    return <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>;
+  }
+  if(!books || books.length === 0) {
+    return <div style={{textAlign: 'center', marginTop: '50vh'}}>No books available.</div>;
   }
   return(
     <div>
-      {books && books.items.map(book => (
-        <div key={book.id}>
-          <h2>{book.volumeInfo.title}</h2>
-          <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>
-          <img src={book.volumeInfo.imageLinks?.thumbnail} alt={book.volumeInfo.title} />
-          <p>{book.volumeInfo.description}</p>
-        </div>
-      ))}
+      <div className = {styles.bookCards}>
+        {books && books.map(book => (
+          <BookCard key={book.id} book={book} />
+        ))}
+      </div>
     </div>
   )
 }

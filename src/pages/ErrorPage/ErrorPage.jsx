@@ -1,5 +1,6 @@
 import { useRouteError } from "react-router-dom";
-import './ErrorPage.modules.css';
+import RootLayout from "../../RootLayout";
+import './ErrorPage.module.css';
 import { Link } from "react-router-dom";
 export default function ErrorPage() {
   const error = useRouteError();
@@ -13,6 +14,7 @@ export default function ErrorPage() {
   let errorData = error.data || null;
   return (
     <div >
+      <RootLayout/>
       <h1>Kyle Save Me!</h1>
       <h2>{errorStatus} | {errorTitle}</h2>
       <p>{errorMessage}</p>

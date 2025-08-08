@@ -7,4 +7,17 @@
   background-color: white;
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
+  color: black;
+}
+
+.bookCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+}
+
+.bookCard img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  object-fit: contain;
 }

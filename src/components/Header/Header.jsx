@@ -1,6 +1,6 @@
-import webLogo from '../../public/bitBooks-logo.png';
+import webLogo from '../../../public/bitBooks-logo.png';
 import { Link } from 'react-router-dom';
-import classes from './Header.modules.css';
+import classes from './Header.module.css';
 
 export default function Header() {
   return (
