@@ -15,7 +15,7 @@ export default function ErrorPage() {
   return (
     <div >
       <RootLayout/>
-      <h1>Kyle Save Me!</h1>
+      <h1>Oops!</h1>
       <h2>{errorStatus} | {errorTitle}</h2>
       <p>{errorMessage}</p>
       {errorData && <p>{errorData}</p>}
