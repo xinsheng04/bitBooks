@@ -76,3 +76,92 @@ header li a:hover {
   background-color:  #0077cc;
   color: #f0f0f0;
 }
+
+/* --- Responsive Styles --- */
+
+/* Tablets (max-width: 1232px) */
+@media (max-width: 1232px) {
+  .bitbooks-header {
+    grid-template-columns: 1fr;
+    padding: 0.5rem 0.5rem;
+    height: auto;
+  }
+
+  .header-titles {
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: .5rem;
+  }
+
+  .logo-link img {
+    height: 3rem;
+    margin-left: 1rem;
+  }
+
+  .logo-link .title {
+    font-size: 2.2rem;
+    margin-right: 1rem;
+  }
+
+  .header-titles .slogan {
+    font-size: 2.2rem;
+  }
+
+  header .nav-links {
+    max-width: 100%;
+    margin: 0 1rem;
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  }
+
+  header li a {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.7rem;
+  }
+}
+
+/* Mobile (max-width: 600px) */
+@media (max-width: 600px) {
+  .bitbooks-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.3rem 0.2rem;
+    height: auto;
+  }
+
+  .header-titles {
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: .5rem;
+  }
+
+  .logo-link img {
+    height: 2.2rem;
+    margin-left: 0.5rem;
+  }
+
+  .logo-link .title {
+    font-size: 1.3rem;
+    /* margin-right: 0.5rem; */
+  }
+
+  .header-titles .slogan {
+    font-size: 1.3rem;
+    /* margin: 0 auto; */
+    margin-bottom: 0.2rem;
+  }
+
+  header .nav-links {
+    margin: 0 0.2rem;
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding-left: 0;
+    align-self: center;
+  }
+
+  header li a {
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+  }
+}

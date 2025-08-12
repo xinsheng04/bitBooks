@@ -14,12 +14,12 @@
 }
 
 .mainContent {
-  display: flex;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 7fr 3fr;
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 2rem;
-  flex-wrap: wrap; /* makes it responsive */
+  /* flex-wrap: wrap; makes it responsive */
 }
 
 .text {
@@ -60,8 +60,15 @@
 
 .mainContent img {
   flex: 0 0 auto;
-  width: 200px;
+  width: 30vw;
   height: auto;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.description{
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #000000;
+  text-align: left;
 }

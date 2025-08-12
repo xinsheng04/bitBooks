@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './BookDetailsPage.module.css';
+import useImportBooks from '../../util/useImportBooks';
 
 /*
   id,
@@ -19,15 +20,23 @@ import styles from './BookDetailsPage.module.css';
   previewLink,
   infoLink,
 */
+
+
 export default function BookDetailsPage(){
   const { bookId } = useParams();
   const book = useSelector(state=> state.fetchedBooks.books.find(b => b.id === bookId));
   if (!book) {
-    throw {
-      title: "Book not found",
-      message: `No book found with ID: ${bookId}`,
-      status: 404
-    };
+    const {error, loading} = useImportBooks({bookId});
+    if (loading) {
+      return <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>;
+    }
+    if (error) {
+      throw {
+        title: "Book not found",
+        message: `No book found with ID: ${bookId}`,
+        status: 404
+      };
+    }
   }
   return (
     <div>
@@ -47,8 +56,8 @@ export default function BookDetailsPage(){
             </tbody>
           </table>
           <strong>Description</strong>
-          <p>
-            {book.description}
+          <p className={styles.description}>
+            {book.description ? book.description : 'No description available.'}
           </p>
           <a href={book.previewLink} target="_blank" rel="noopener noreferrer">Preview</a>
           <a href={book.infoLink} target="_blank" rel="noopener noreferrer">More Info</a>
