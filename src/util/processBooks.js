@@ -1,11 +1,7 @@
 export default function processBooks(apiResponse){
-  if(!apiResponse || !apiResponse.items){
-    throw {
-      title: "API Response Error",
-      message: "Failed to process books from the API response.",
-      status: 500,
-      data: apiResponse
-    };
+  if (!apiResponse || !apiResponse.items) {
+    console.warn("[processBooks] No items found in API response:", apiResponse);
+    return []; // safer: return empty list
   }
   return apiResponse.items.map(book => {
     if(!book.volumeInfo || !book.id){

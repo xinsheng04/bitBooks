@@ -11,6 +11,9 @@ export default function useHttp(url, config=defaultConfig, errorMessage='An erro
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if(!url){
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = await fetch(url, config);

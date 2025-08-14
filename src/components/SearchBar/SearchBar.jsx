@@ -1,15 +1,11 @@
 import styles from './SearchBar.module.css';
 import { useState } from 'react';
-export default function SearchBar({handleSearch}){
+export default function SearchBar({onSearch}){
   const [searchTerm, setSearchTerm] = useState('');
-
-  const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
+  // console.log(searchTerm);
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleSearch(searchTerm);
+    onSearch(searchTerm);
   };
 
   return (
@@ -19,7 +15,7 @@ export default function SearchBar({handleSearch}){
         placeholder="Search..." 
         className={styles.input} 
         value={searchTerm} 
-        onChange={handleInputChange}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button className={styles.button} onClick={handleSubmit}>
         &#128269;
