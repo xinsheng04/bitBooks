@@ -5,46 +5,57 @@ import { useState, useEffect } from "react";
 import BookCard from "../../components/BookCard/BookCard.jsx";
 import styles from "./SearchPage.module.css";
 import useImportBooks from "../../util/useImportBooks.js";
-export default function SearchPage(){
-  const firstLoadDone = useSelector(state=> state.fetchedBooks.firstLoad);
+export default function SearchPage() {
+  const firstLoadDone = useSelector(state => state.fetchedBooks.firstLoad);
   const books = useSelector(state => state.fetchedBooks.books);
   if (!firstLoadDone || !books) {
     return <BooksLoader loadQty={30} />;
   }
   const [results, setResults] = useState(books);
   const [APISearchTerm, setAPISearchTerm] = useState('');
-  const {data, loading, error} = useImportBooks({bookTitle: APISearchTerm, loadQty: 30, runMe: APISearchTerm !== ''});
+  const { data, loading, error } = useImportBooks({ bookTitle: APISearchTerm, loadQty: 30, runMe: APISearchTerm !== '' });
 
   useEffect(() => {
-    if (data && !loading && !error) {
-      setResults(prev => data!==null ? data : prev);
-      setAPISearchTerm(''); // clear search term after fetching
+    if (APISearchTerm && data && !loading && !error) {
+      setResults(data);
     }
-  }, [data, loading, error]);
+  }, [APISearchTerm, data, loading, error]);
 
-  function handleSearch(title){
+
+  function handleSearch(title) {
+    // console.log('Search title: ', title);
     const foundBooks = books.filter(book =>
       book.title.toLowerCase().includes(title.toLowerCase())
     );
 
     if (foundBooks && foundBooks.length > 0) {
       setResults(foundBooks);
-      setAPISearchTerm(''); // clear API fetch
+      // setAPISearchTerm(''); // clear API fetch
     } else {
       setResults([]);
       setAPISearchTerm(title);
     }
   }
 
+  function handleClear() {
+    console.log('Clear search results'); 
+    setResults([...books]); 
+    setAPISearchTerm('');
+  }
+
   return (
     <div className={styles.searchPage}>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} onClear={handleClear} />
       <div className={styles.bookCards}>
-        {loading && <p>Loading...</p>}
+        {loading && results.length === 0 && <p>Loading...</p>}
         {error && <p>{error.message}</p>}
-        {results.map(book => (
-          <BookCard key={book.id} book={book} />
-        ))}
+        {Array.isArray(results) && results.length > 0 &&
+          results.map(book => (
+            <BookCard key={book.id} book={book} />
+          ))}
+        {
+          !Array.isArray(results) && results.items.map(book => (<BookCard key={book.id} book={book.volumeInfo} />))
+        }
       </div>
     </div>
   );

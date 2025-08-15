@@ -13,16 +13,17 @@ export default function useImportBooks({bookTitle=null, loadQty=30, runMe=true})
     apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(bookTitle)}&maxResults=${loadQty}&key=${apiKey}`;
   }
   apiUrl = runMe ? apiUrl : null;
+  // console.log('runMe: ', runMe);
   const config = useMemo(() => ({
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   }), []);
   const {data, error, loading} = useHttp(apiUrl, config, 'Book fetching failed');
   useEffect(()=>{
-      if (runMe && data && !loading && !error) {
-        const processedBooks = processBooks(data);
-        dispatch(fetchedBooksActions.loadBooks({books: processedBooks, firstLoad: firstLoadFlag}));
-      }
+    if (runMe && data && !loading && !error) {
+      const processedBooks = processBooks(data);
+      dispatch(fetchedBooksActions.loadBooks({books: processedBooks, firstLoad: firstLoadFlag}));
+    }
   }, [data, loading, error, runMe]);
   return {data, loading, error};
 }

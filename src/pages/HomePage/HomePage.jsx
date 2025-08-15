@@ -3,6 +3,7 @@ import styles from './HomePage.module.css';
 import BookCard from '../../components/BookCard/BookCard';
 export default function HomePage(){
   const books = useSelector(state => state.fetchedBooks.books);
+  console.log(books);
   const isLoading = useSelector(state => state.fetchedBooks.isLoading);
   if(isLoading) {
     return <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>;
