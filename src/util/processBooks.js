@@ -4,7 +4,7 @@ export default function processBooks(apiResponse){
     return []; // safer: return empty list
   }
   return apiResponse.items.map(book => {
-    if(!book.volumeInfo || !book.id){
+    if(!book.volumeInfo || !book.id || !book.volumeInfo.title){
       return null;
     }
     return {

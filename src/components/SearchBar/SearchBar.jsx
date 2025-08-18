@@ -1,7 +1,7 @@
 import styles from './SearchBar.module.css';
 import { useState, useEffect } from 'react';
 export default function SearchBar({onSearch, onClear}){
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(sessionStorage.getItem('search-item') || '');
   const handleSearchTerm = (value) => {
     setSearchTerm(value);
   }
@@ -25,6 +25,7 @@ export default function SearchBar({onSearch, onClear}){
         className={styles.input} 
         value={searchTerm} 
         onChange={(e) => handleSearchTerm(e.target.value)}
+        onKeyDown={(e) => {e.key === 'Enter' ? handleSubmit(e) : null}}
       />
       <button className={styles.button} onClick={handleSubmit}>
         &#128269;

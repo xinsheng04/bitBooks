@@ -1,19 +1,22 @@
 import { useSelector } from "react-redux";
-import BooksLoader from "../../BooksLoader";
 import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 import { useState, useEffect } from "react";
 import BookCard from "../../components/BookCard/BookCard.jsx";
 import styles from "./SearchPage.module.css";
 import useImportBooks from "../../util/useImportBooks.js";
 export default function SearchPage() {
-  const firstLoadDone = useSelector(state => state.fetchedBooks.firstLoad);
   const books = useSelector(state => state.fetchedBooks.books);
-  if (!firstLoadDone || !books) {
-    return <BooksLoader loadQty={30} />;
-  }
   const [results, setResults] = useState(books);
   const [APISearchTerm, setAPISearchTerm] = useState('');
   const { data, loading, error } = useImportBooks({ bookTitle: APISearchTerm, loadQty: 30, runMe: APISearchTerm !== '' });
+
+  useEffect(() => {
+    const loadSearchTerm = sessionStorage.getItem('search-item') || '';
+    if(loadSearchTerm){
+      const foundBooks = books.filter(book => book.title.toLowerCase().includes(loadSearchTerm.toLowerCase()));
+      setResults(foundBooks.length > 0 ? foundBooks : []);
+    }
+  }, []);
 
   useEffect(() => {
     if (APISearchTerm && data && !loading && !error) {
@@ -23,14 +26,13 @@ export default function SearchPage() {
 
 
   function handleSearch(title) {
-    // console.log('Search title: ', title);
+    sessionStorage.setItem('search-item', title);
     const foundBooks = books.filter(book =>
       book.title.toLowerCase().includes(title.toLowerCase())
     );
 
     if (foundBooks && foundBooks.length > 0) {
       setResults(foundBooks);
-      // setAPISearchTerm(''); // clear API fetch
     } else {
       setResults([]);
       setAPISearchTerm(title);
@@ -38,9 +40,9 @@ export default function SearchPage() {
   }
 
   function handleClear() {
-    console.log('Clear search results'); 
-    setResults([...books]); 
+    setResults([...books]);
     setAPISearchTerm('');
+    sessionStorage.removeItem('search-item');
   }
 
   return (

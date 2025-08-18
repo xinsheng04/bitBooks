@@ -1,10 +1,11 @@
 import useHttp from "./useHttp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { fetchedBooksActions } from '../store/fetchedBooks';
 import processBooks from '../util/processBooks';
 export default function useImportBooks({bookTitle=null, loadQty=30, runMe=true}){
   const dispatch = useDispatch();
+  const books = useSelector(state => state.fetchedBooks.books);
   const apiKey = import.meta.env.VITE_API_KEY;
   const firstLoadFlag = bookTitle ? false : true;
   let apiUrl = `https://www.googleapis.com/books/v1/volumes?q=a&maxResults=${loadQty}&key=${apiKey}`;
@@ -23,6 +24,7 @@ export default function useImportBooks({bookTitle=null, loadQty=30, runMe=true})
     if (runMe && data && !loading && !error) {
       const processedBooks = processBooks(data);
       dispatch(fetchedBooksActions.loadBooks({books: processedBooks, firstLoad: firstLoadFlag}));
+      sessionStorage.setItem('fetchedBooks', JSON.stringify([...books, ...processedBooks]));
     }
   }, [data, loading, error, runMe]);
   return {data, loading, error};

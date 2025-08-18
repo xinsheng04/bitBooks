@@ -2,19 +2,29 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RootLayout from './RootLayout';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/SearchPage';
-import GenrePage from './pages/GenrePage';
+import ProfilePage from './pages/ProfilePage';
 import BookDetailsPage from './pages/BookDetailsPage/BookDetailsPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
-import BooksLoader from './BooksLoader';
-import { useSelector } from 'react-redux';
+import BooksLoader from './components/BooksLoader';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchedBooksActions } from './store/fetchedBooks';
+
 import './App.css'
 
 function App() {
-  const firstLoadDone = useSelector(state => state.fetchedBooks.firstLoad);
-  if (!firstLoadDone) {
+  const dispatch = useDispatch();
+  const books = useSelector(state => state.fetchedBooks.books);
+  useEffect(()=>{
+    if(sessionStorage.getItem('fetchedBooks') && JSON.parse(sessionStorage.getItem('fetchedBooks')).length > 0){
+      const books = JSON.parse(sessionStorage.getItem('fetchedBooks'));
+      dispatch(fetchedBooksActions.loadBooks({books, firstLoad: true}));
+    } 
+  }, []);
+  
+  if(books.length===0){
     return <BooksLoader loadQty={30} />;
   }
-
   const routes = createBrowserRouter([
     {
       path:'/',
@@ -24,7 +34,7 @@ function App() {
       children:[
         {index: true, element: <HomePage/>},
         {path: 'search', element: <SearchPage/>},
-        {path: 'genre', element: <GenrePage/>},
+        {path: 'profile', element: <ProfilePage/>},
         {path: 'books/:bookId', element: <BookDetailsPage/>}
       ]
     }
