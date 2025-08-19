@@ -62,39 +62,3 @@ export default function SearchPage() {
     </div>
   );
 }
-
-/*
-  const [searchTitle, setSearchTitle] = useState('');
-  const [manualResults, setManualResults] = useState(null);
-
-  // Always call hook at top level
-  const { data, loading, error } = useImportBooks({
-    bookTitle: searchTitle || null,
-    isFirstLoad: false
-  });
-
-  useEffect(() => {
-    if (searchTitle && data && !loading && !error) {
-      setManualResults(data);
-    }
-  }, [searchTitle, data, loading, error]);
-
-  function handleSearch(title){
-    const foundBooks = books.filter(book =>
-      book.title.toLowerCase().includes(title.toLowerCase())
-    );
-
-    if (foundBooks.length > 0) {
-      setManualResults(foundBooks);
-      setSearchTitle(''); // clear API fetch
-    } else {
-      setManualResults(null); // let API results show
-      setSearchTitle(title);  // trigger fetch
-    }
-  }
-
-
-  console.log('Manual results: ', manualResults);
-
-  const results = manualResults || books;
-*/

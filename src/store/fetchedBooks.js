@@ -19,7 +19,7 @@ const fetchedBooksSlice = createSlice({
   initialState,
   reducers: {
     loadBooks(state, action){
-      if(!state.firstLoad && action.payload.firstLoad){
+      if(action.payload.firstLoad){
         state.books = action.payload.books;
         state.firstLoad = true;
       } else{
