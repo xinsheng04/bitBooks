@@ -15,6 +15,7 @@ export default function Header() {
       <ul className={classes['nav-links']}>
         <li><NavLink to='/' className={({ isActive }) => (isActive ? classes['active'] : '')}>Home</NavLink></li>
         <li><NavLink to='/search' className={({ isActive }) => (isActive ? classes['active'] : '')}>Search</NavLink></li>
+        <li><NavLink to='/profile' className={({ isActive }) => (isActive ? classes['active'] : '')}>Profile</NavLink></li>
       </ul>
     </header>
   );

@@ -1,0 +1,81 @@
+.profilePage {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: system-ui, sans-serif;
+  color: #333;
+}
+
+.userInfo {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #f5f7fa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.username {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.password {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.savedBooks h2 {
+  margin-bottom: 1rem;
+}
+
+.bookList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bookItem {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  background: white;
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bookItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.bookTitle {
+  font-size: 1.05rem;
+}
+
+.emptyBooks {
+  text-align: center;
+  padding: 1.5rem;
+  background: #fafafa;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+}
+
+.randomBookBtn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.randomBookBtn:hover {
+  background: #4338ca;
+}

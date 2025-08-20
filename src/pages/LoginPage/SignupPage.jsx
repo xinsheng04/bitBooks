@@ -1,7 +1,7 @@
 import { addUser } from "../../util/usersManagement.js";
 import { userActions } from "../../store/user.js";
-import FormInput from "../../components/UI/FormInput";
-import Modal from "../../components/UI/modal";
+import FormInput from "../../components/UI/FormInput.jsx";
+import Modal from "../../components/UI/modal.jsx";
 export default function SignUpPage({ className, dispatch, signUpToggler, setError, findUserExists}) {
   function handleSignUp(event){
     event.preventDefault();

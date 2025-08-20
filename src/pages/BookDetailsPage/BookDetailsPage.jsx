@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { userActions } from '../../store/user';
 import styles from './BookDetailsPage.module.css';
 import useImportBooks from '../../util/useImportBooks';
-
+import { addSavedBook, removeSavedBook } from '../../util/usersManagement';
 /*
   id,
   title,
@@ -21,10 +23,12 @@ import useImportBooks from '../../util/useImportBooks';
   infoLink,
 */
 
-
 export default function BookDetailsPage(){
   const { bookId } = useParams();
+  const dispatch  = useDispatch();
+  const user = useSelector(state => state.user);
   const book = useSelector(state=> state.fetchedBooks.books.find(b => b.id === bookId));
+  const [isSaved, setIsSaved] = useState(user.savedBooks.some(savedBook => savedBook.id === book.id));
   if (!book) {
     const {error, loading} = useImportBooks({bookId});
     if (loading) {
@@ -38,12 +42,28 @@ export default function BookDetailsPage(){
       };
     }
   }
+  function saveBookHandler(){
+    addSavedBook(user.username, book);
+    dispatch(userActions.addSavedBook(book));
+    setIsSaved(true);
+  }
+
+  function removeBookHandler(){
+    removeSavedBook(user.username, book.id);
+    dispatch(userActions.removeSavedBook(book.id));
+    setIsSaved(false);
+  }
   return (
     <div>
       <h1 className={styles.title}>{book.title}</h1>
       <h2 className={styles.subtitle}>{book.subtitle}</h2>
       <div className={styles.mainContent}>
         <div className={styles.text}>
+          {!isSaved ? 
+          <button onClick={()=>saveBookHandler()}>Save this book</button> 
+          :
+          <button onClick={()=>removeBookHandler()}>Unsave this book</button>
+          }
           <table>
             <tbody>
               <tr><td><strong>Authors: </strong></td><td>{book.authors}</td></tr>

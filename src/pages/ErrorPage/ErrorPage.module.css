@@ -2,6 +2,13 @@
   text-align: center;
 }
 
+.errorImg {
+  width: 200px;
+  height: auto;
+  margin: 20px auto;
+  display: block;
+}
+
 .ErrorPage h1 {
   font-size: 2rem;
   color: #ff0000;

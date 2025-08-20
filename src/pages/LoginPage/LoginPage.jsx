@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { findUserExists, verifyPassword } from '../../util/usersManagement.js';
 import { userActions } from '../../store/user.js';
-import SignUpPage from '../SignUpPage/SignupPage.jsx';
+import SignUpPage from './SignupPage.jsx';
 import classes from './LoginPage.module.css';
 export default function LoginPage() {
   const [error, setError] = useState(null);

@@ -1,6 +1,7 @@
 import { useRouteError } from "react-router-dom";
+import ErrorLogo from "../../../public/error-logo.webp";
 import RootLayout from "../../RootLayout";
-import './ErrorPage.module.css';
+import styles from './ErrorPage.module.css';
 import { Link } from "react-router-dom";
 export default function ErrorPage() {
   const error = useRouteError();
@@ -15,7 +16,7 @@ export default function ErrorPage() {
   return (
     <div >
       <RootLayout/>
-      <h1>Oops!</h1>
+      <img className={styles.errorImg} src={ErrorLogo} alt="Amon has stolen this logo" />
       <h2>{errorStatus} | {errorTitle}</h2>
       <p>{errorMessage}</p>
       {errorData && <p>{errorData}</p>}
