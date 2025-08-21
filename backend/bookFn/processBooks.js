@@ -1,4 +1,4 @@
-export default function processBooks(apiResponse){
+function processBooks(apiResponse){
   if (!apiResponse || !apiResponse.items) {
     console.warn("[processBooks] No items found in API response:", apiResponse);
     return []; // safer: return empty list
@@ -29,3 +29,5 @@ export default function processBooks(apiResponse){
     }
   }).filter(book => book !== null);
 }
+
+module.exports = {processBooks};

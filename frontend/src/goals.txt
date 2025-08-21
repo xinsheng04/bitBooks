@@ -1,0 +1,4 @@
+1. Implement a backend with node.js
+2. Move books API and user data to backend
+3. Call backend services from frontend
+4. Test all services and remove errors if there are any.

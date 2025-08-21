@@ -68,12 +68,12 @@ export const addUser = (username, password) => {
   saveUsers(newUsers);
 };
 
-export const deleteUser = (userId) => {
-  const newUsers = userList.filter((u) => u.id !== userId);
-  if (newUsers.length === userList.length) {
-    console.log("User not found");
-    return false;
-  }
-  saveUsers(newUsers);
-  return true;
-};
+// export const deleteUser = (userId) => {
+//   const newUsers = userList.filter((u) => u.id !== userId);
+//   if (newUsers.length === userList.length) {
+//     console.log("User not found");
+//     return false;
+//   }
+//   saveUsers(newUsers);
+//   return true;
+// };
