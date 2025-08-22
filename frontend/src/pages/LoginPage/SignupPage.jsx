@@ -1,17 +1,17 @@
-import { addUser } from "../../util/usersManagement.js";
 import { userActions } from "../../store/user.js";
+import { signUpUser } from "../../util/usersBackend.js";
 import FormInput from "../../components/UI/FormInput.jsx";
 import Modal from "../../components/UI/modal.jsx";
-export default function SignUpPage({ className, dispatch, signUpToggler, setError, findUserExists}) {
+export default function SignUpPage({ className, dispatch, signUpToggler, setError}) {
   function handleSignUp(event){
     event.preventDefault();
     const fd = new FormData(event.target);
     const {username, password} = Object.fromEntries(fd.entries());
-    if(!findUserExists(username)){
-      addUser(username, password);
+    const {success, message} = signUpUser(username, password);
+    if(success){
       dispatch(userActions.login(username));
       sessionStorage.setItem('user', JSON.stringify({username}));
-      // console.log("user registered");
+      console.log("user registered");
     } else{
       setError("User already exists");
     }

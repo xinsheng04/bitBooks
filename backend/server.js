@@ -1,29 +1,36 @@
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
-const { addBook } = require('./library');
+const { addBookToLibrary } = require('./library');
 const { processBooks } = require('./bookFn/processBooks');
 const { getBooks, searchBooks } = require('./bookFn/fetchBooks');
-const {getUserData} = require('./userFn/getUserData');
+// const { findUser } = require('./userFn/getUserData');
+const {addBook} = require('./userFn/addBook');
+const {deleteBook} = require('./userFn/deleteBook');
 const {loginUser} = require('./userFn/loginUser');
-const {registerNewUser} = require('./userFn/registerNewUser');
+const {signUpUser} = require('./userFn/signUpUser');
+const {AuthenticateToken} = require('./AuthenticateToken');
+
 const app = express();
 const PORT = 3000;
 const cors = require('cors');
 
+app.use(express.json()); // To parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
+
 app.use(cors());
 
-app.get('/books', getBooks);
+app.get('/books', AuthenticateToken, getBooks);
 
-app.get('/books/search', searchBooks);
+app.get('/books/search', AuthenticateToken, searchBooks);
 
-app.post('/users/:username/addBook');
+app.post('/users/:username/addBook', AuthenticateToken, addBook);
 
-app.post('/users/:username/deleteBook');
+app.post('/users/:username/deleteBook', AuthenticateToken, deleteBook);
 
-app.get('/users/login', loginUser);
+app.post('/users/login', loginUser);
 
-app.post('/users/registerNewUser', registerNewUser);
+app.post('/users/signUpUser', signUpUser);
 
 async function loadInitialBooks() {
     const API_KEY = process.env.API_KEY;
@@ -39,7 +46,7 @@ async function loadInitialBooks() {
         const response = await axios.get(apiUrl);
         const books = processBooks(response.data);
         if (books.length > 0) {
-            books.forEach(book => addBook(book));
+            books.forEach(book => addBookToLibrary(book));
             console.log(`Successfully loaded ${books.length} books.`);
         } else {
             console.log("Loaded 0 books. Check API key or query.");

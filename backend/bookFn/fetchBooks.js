@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { library, addBook } = require('./library');
+const { library, addBook } = require('../library');
 const { processBooks } = require('./processBooks')
 
 function getBooks(req, res) {

@@ -1,7 +1,6 @@
 function processBooks(apiResponse){
   if (!apiResponse || !apiResponse.items) {
-    console.warn("[processBooks] No items found in API response:", apiResponse);
-    return []; // safer: return empty list
+    throw new Error("[processBooks] No items found in API response:", apiResponse);
   }
   return apiResponse.items.map(book => {
     if(!book.volumeInfo || !book.id || !book.volumeInfo.title){

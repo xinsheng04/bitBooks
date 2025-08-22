@@ -1,5 +1,5 @@
 const library = [];
-function addBook(book){
+function addBookToLibrary(book){
   library.push(book);
 }
-module.exports = {library, addBook};
+module.exports = {library, addBookToLibrary};

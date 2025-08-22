@@ -1,3 +1,5 @@
+const { library } = require("./library");
+
 const users = [];
 
 /* user management */
@@ -14,6 +16,7 @@ function addUser(username, password) {
     savedBooks: []
   };
   users.push(newUser);
+  return {id: newUser.id, username: newUser.username};
 }
 function deleteUser(username) {
   users.filter(u => u.username !== username);
@@ -26,18 +29,31 @@ function getUserData(username) {
 }
 
 /* saved books management */
-function addSavedBook(username, book) {
+function addSavedBook(username, bookId) {
   const user = getUserData(username);
-  if (!user || user.savedBooks.some(b => b.id === book.id)) return false;
+  if(!user){
+    throw new Error("User not provided");
+  }
+  if (user.savedBooks.some(b => b.id === bookId)){
+    throw new Error("Book already exists.");
+  }
   const userIdx = users.findIndex(u => u.username === username);
+  const book = library.find(b => b.id === bookId);
+  if(!book){
+    throw new Error("Book not found in library");
+  }
   users[userIdx].savedBooks.push(book);
   return true;
 };
 
 function removeSavedBook(username, bookId) {
   const user = getUserData(username);
-  if (!user) return false;
-  if (user.savedBooks.findIndex(b => b.id === bookId) === -1) return false;
+  if (!user){
+    throw new Error("User not provided");
+  }
+  if (user.savedBooks.findIndex(b => b.id === bookId) === -1){
+    throw new Error("Book not found.");
+  }
   const userIdx = users.findIndex(u => u.username === username);
   users[userIdx].savedBooks = users[userIdx].savedBooks.filter(b => b.id !== bookId);
   return true;
@@ -48,7 +64,6 @@ module.exports = {
   addUser,
   deleteUser,
   userExists,
-  verifyPassword,
   getUserData,
   addSavedBook,
   removeSavedBook

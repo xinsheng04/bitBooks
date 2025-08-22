@@ -1,13 +1,28 @@
 const basicUsersUrl = "https://localhost:3000/users";
-const getConfigObject = (callMethod, body={}) => {
+const getConfigObject = (callMethod, body = {}, headers = {}, bearerToken = "") => {
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  // Add the bearer token to the headers if it exists
+  if (bearerToken) {
+    defaultHeaders['Authorization'] = `Bearer ${bearerToken}`;
+  }
+
   return {
     method: callMethod,
     headers: {
-      'Content-Type': 'application/json',
+      ...defaultHeaders,
+      ...headers, // This allows new headers to be added or existing ones to be overridden
     },
     body
-  }
-}
+  };
+};
+
+const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
+
 // Commented out: the user data will be returned by the login function upon a successful login
 // JWT token will be implemented in the future 
 // export async function getUserData(username) {
@@ -27,6 +42,9 @@ const getConfigObject = (callMethod, body={}) => {
 //   }
 // }
 
+// IMPORTANT: ADD JWT token in the future
+// except for login and signup
+
 export async function addSavedBook(username, bookId) {
   if (!username)
     return;
@@ -37,7 +55,7 @@ export async function addSavedBook(username, bookId) {
     }
     // returns 2xx if successful, 4xx with error message if not
     const res = await fetch(`${basicUsersUrl}/:${username}/addBook?bookId=${bookId}`,
-      getConfigObject('POST'));
+      getConfigObject('POST', null, {}, getAccessToken()));
     if (!res.ok) {
       // Read the response body to get the error message
       const errorData = await res.json(); 
@@ -60,7 +78,7 @@ export async function deleteSavedBook(username, bookId) {
     }
     // returns 2xx if successful, 4xx with error message if not
     const res = await fetch(`${basicUsersUrl}/:${username}/deleteBook?bookId=${bookId}`,
-      getConfigObject('POST'));
+      getConfigObject('POST', null, {}, getAccessToken()));
     if (!res.ok) {
       // Read the response body to get the error message
       const errorData = await res.json(); 
@@ -73,29 +91,31 @@ export async function deleteSavedBook(username, bookId) {
   }
 }
 
-export async function registerNewUser(username, password){
+export async function signUpUser(username, password){
   if(!username || !password){
     return false;
   }
   try{
     // Note: backend will throw an error if user already exists
-    const res = await fetch(`${basicUsersUrl}/registerNewUser`, 
+    const res = await fetch(`${basicUsersUrl}/signUpUser`, 
       getConfigObject('POST'), {
         username,
         password
       });
     if(!res.ok){
       const result = await res.json();
-      throw new Error(result);
+      throw new Error(result.message);
     }
-    return true;
+    const result = await res.json();
+    console.log(result.message);
+    sessionStorage.setItem('accessToken', result.accessToken);
+    return {success: true, message: result.message};
   } catch(e){
-    console.log(result);
-    return false;
+    console.log(e);
+    return {success: false, message: e};
   }
 }
 
-// I'll integrate this later
 export async function loginUser(username, password) {
   try {
     const response = await fetch(`${basicUsersUrl}/login`, {
@@ -119,8 +139,8 @@ export async function loginUser(username, password) {
 
     // This block handles a successful login (response.ok is true)
     const result = await response.json();
-    console.log('Login successful:', result.message);
-    // You might also receive a JWT token from the backend here
+    console.log(result.message);
+    sessionStorage.setItem('accessToken', result.accessToken);
     return { success: true, message: result.message };
 
   } catch (e) {

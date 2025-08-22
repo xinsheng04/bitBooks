@@ -2,7 +2,7 @@ import Modal from '../../components/UI/modal';
 import FormInput from '../../components/UI/FormInput.jsx';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { findUserExists, verifyPassword } from '../../util/usersManagement.js';
+import { loginUser} from '../../util/usersBackend.js';
 import { userActions } from '../../store/user.js';
 import SignUpPage from './SignupPage.jsx';
 import classes from './LoginPage.module.css';
@@ -17,11 +17,12 @@ export default function LoginPage() {
   function handleSubmit(event) {
     const fd = new FormData(event.target);
     const { username, password } = Object.fromEntries(fd.entries());
-    if (findUserExists(username) && verifyPassword(username, password)) {
+    const {success, message} = loginUser(username, password);
+    if (success) {
       dispatch(userActions.login(username));
       sessionStorage.setItem('user', JSON.stringify({username}));
     } else {
-      setError("Invalid username or password");
+      setError(message);
     }
   }
   return (
@@ -41,7 +42,7 @@ export default function LoginPage() {
     }
     {
       !error && signup &&
-      <SignUpPage className={classes['login-modal']} dispatch={dispatch} signUpToggler={loadSignup} setError={setError} findUserExists={findUserExists}/>
+      <SignUpPage className={classes['login-modal']} dispatch={dispatch} signUpToggler={loadSignup} setError={setError}/>
     }
     {
       error &&
