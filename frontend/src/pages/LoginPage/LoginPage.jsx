@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { loginUser} from '../../util/usersBackend.js';
 import { userActions } from '../../store/user.js';
+import { fetchedBooksActions } from '../../store/fetchedBooks.js';
 import SignUpPage from './SignupPage.jsx';
 import classes from './LoginPage.module.css';
 export default function LoginPage() {
@@ -14,13 +15,16 @@ export default function LoginPage() {
     setError(null);
     loadSignup(true);
   }
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
+    event.preventDefault();
     const fd = new FormData(event.target);
     const { username, password } = Object.fromEntries(fd.entries());
-    const {success, message} = loginUser(username, password);
+    const {success, message, books, user} = await loginUser(username, password);
     if (success) {
-      dispatch(userActions.login(username));
-      sessionStorage.setItem('user', JSON.stringify({username}));
+      dispatch(userActions.login(user));
+      dispatch(fetchedBooksActions.loadBooks(books));
+      sessionStorage.setItem('user', JSON.stringify(user));
+      console.log(message);
     } else {
       setError(message);
     }
@@ -36,7 +40,7 @@ export default function LoginPage() {
           <FormInput label="PASSWORD" id="password" placeholder="Enter your password" required />
           <button type="submit">Login</button>
         </form>
-      <button onClick={()=>handleRegister()}>Sign up</button>
+        <button onClick={()=>handleRegister()}>Sign up</button>
       </Modal>
     </div>
     }

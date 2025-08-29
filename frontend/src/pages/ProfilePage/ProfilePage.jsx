@@ -9,6 +9,8 @@ export default function ProfilePage() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   function handleLogout(){
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("search-item");
     dispatch(userActions.logout());
   }
 

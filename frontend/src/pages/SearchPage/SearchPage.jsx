@@ -3,12 +3,10 @@ import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 import { useState, useEffect } from "react";
 import BookCard from "../../components/BookCard/BookCard.jsx";
 import styles from "./SearchPage.module.css";
-import useImportBooks from "../../util/useImportBooks.js";
+import { searchBook } from "../../util/booksBackend.js";
 export default function SearchPage() {
   const books = useSelector(state => state.fetchedBooks.books);
   const [results, setResults] = useState(books);
-  const [APISearchTerm, setAPISearchTerm] = useState('');
-  const { data, loading, error } = useImportBooks({ bookTitle: APISearchTerm, loadQty: 30, runMe: APISearchTerm !== '' });
 
   useEffect(() => {
     const loadSearchTerm = sessionStorage.getItem('search-item') || '';
@@ -18,14 +16,7 @@ export default function SearchPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (APISearchTerm && data && !loading && !error) {
-      setResults(data);
-    }
-  }, [APISearchTerm, data, loading, error]);
-
-
-  function handleSearch(title) {
+  async function handleSearch(title) {
     sessionStorage.setItem('search-item', title);
     const foundBooks = books.filter(book =>
       book.title.toLowerCase().includes(title.toLowerCase())
@@ -33,15 +24,22 @@ export default function SearchPage() {
 
     if (foundBooks && foundBooks.length > 0) {
       setResults(foundBooks);
-    } else {
-      setResults([]);
-      setAPISearchTerm(title);
+      return;
+    } 
+    try{
+      const {book, error} = await searchBook(title);
+      console.log(book);
+      if (error) {
+        throw new Error(error);
+      }
+      setResults(book);
+    } catch(e){
+      console.log(e.message);
     }
   }
 
   function handleClear() {
     setResults([...books]);
-    setAPISearchTerm('');
     sessionStorage.removeItem('search-item');
   }
 
@@ -49,14 +47,12 @@ export default function SearchPage() {
     <div className={styles.searchPage}>
       <SearchBar onSearch={handleSearch} onClear={handleClear} />
       <div className={styles.bookCards}>
-        {loading && results.length === 0 && <p>Loading...</p>}
-        {error && <p>{error.message}</p>}
         {Array.isArray(results) && results.length > 0 &&
           results.map(book => (
             <BookCard key={book.id} book={book} />
           ))}
         {
-          !Array.isArray(results) && results.items.map(book => (<BookCard key={book.id} book={book.volumeInfo} />))
+          !Array.isArray(results) && <p>Something went wrong.</p>
         }
       </div>
     </div>

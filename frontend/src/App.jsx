@@ -1,14 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import RootLayout from './RootLayout';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/SearchPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import BookDetailsPage from './pages/BookDetailsPage/BookDetailsPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
-import BooksLoader from './components/BooksLoader';
 import LoginPage from './pages/LoginPage/LoginPage';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchedBooksActions } from './store/fetchedBooks';
 import { userActions } from './store/user';
 
@@ -16,7 +17,7 @@ import './App.css'
 
 function App() {
   const dispatch = useDispatch();
-  const books = useSelector(state => state.fetchedBooks.books);
+  // const books = useSelector(state => state.fetchedBooks.books);
   const user = useSelector(state => state.user);
   // user && console.log(user);
   useEffect(()=>{
@@ -32,9 +33,6 @@ function App() {
   
   if(!user.username){
     return <LoginPage />;
-  }
-  if(books.length===0){
-    return <BooksLoader loadQty={30} />;
   }
   const routes = createBrowserRouter([
     {

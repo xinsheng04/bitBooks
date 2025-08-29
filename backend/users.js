@@ -25,14 +25,20 @@ function userExists(username) {
   return users.some(u => u.username === username);
 }
 function getUserData(username) {
-  users.find((user) => user.username === username);
+  const user = users.find((user) => user.username === username);
+  return user ? { username: user.username, savedBooks: user.savedBooks } : null;
+}
+
+function getUserPassword(username) {
+  const user = users.find((user) => user.username === username);
+  return user ? user.password : null;
 }
 
 /* saved books management */
 function addSavedBook(username, bookId) {
   const user = getUserData(username);
   if(!user){
-    throw new Error("User not provided");
+    throw new Error("User not provided or does not exist");
   }
   if (user.savedBooks.some(b => b.id === bookId)){
     throw new Error("Book already exists.");
@@ -60,7 +66,8 @@ function removeSavedBook(username, bookId) {
 };
 
 module.exports = {
-  users,
+  // users,
+  getUserPassword,
   addUser,
   deleteUser,
   userExists,

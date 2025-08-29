@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserData } from "../util/usersManagement";
 const initialState = {
   username: null,
-  password: null,
   savedBooks: []
   // error: null
 }
@@ -12,14 +10,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      const userData = getUserData(action.payload);
+      const userData = action.payload;
       state.username = userData.username;
-      state.password = userData.password;
       state.savedBooks = userData.savedBooks || [];
     },
     logout: (state) => {
       state.username = null;
-      state.password = null;
       state.savedBooks = [];
     },
     addSavedBook: (state, action) => {

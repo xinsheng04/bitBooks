@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { userActions } from '../../store/user';
+
+import { addSavedBook, deleteSavedBook } from '../../util/usersBackend';
 import styles from './BookDetailsPage.module.css';
-import useImportBooks from '../../util/useImportBooks';
-import { addSavedBook, removeSavedBook } from '../../util/usersManagement';
 /*
   id,
   title,
@@ -43,13 +43,13 @@ export default function BookDetailsPage(){
     }
   }
   function saveBookHandler(){
-    addSavedBook(user.username, book);
+    addSavedBook(user.username, book.id);
     dispatch(userActions.addSavedBook(book));
     setIsSaved(true);
   }
 
   function removeBookHandler(){
-    removeSavedBook(user.username, book.id);
+    deleteSavedBook(user.username, book.id);
     dispatch(userActions.removeSavedBook(book.id));
     setIsSaved(false);
   }

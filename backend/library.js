@@ -2,4 +2,7 @@ const library = [];
 function addBookToLibrary(book){
   library.push(book);
 }
-module.exports = {library, addBookToLibrary};
+function getBooks() {
+  return { books: library };
+}
+module.exports = {library, addBookToLibrary, getBooks};

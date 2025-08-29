@@ -1,15 +1,36 @@
-const basicBooksUrl = "https://localhost:3000/books";
-const getConfigObject = (callMethod) => {
-  return {
+const basicBooksUrl = "http://localhost:3000/books";
+const getConfigObject = (callMethod, body = {}, headers = {}, bearerToken = "") => {
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  // Add the bearer token to the headers if it exists
+  if (bearerToken) {
+    defaultHeaders['Authorization'] = `Bearer ${bearerToken}`;
+  }
+
+  const configObject = {
     method: callMethod,
     headers: {
-      'Content-Type': 'application/json',
-    }
+      ...defaultHeaders,
+      ...headers, // This allows new headers to be added or existing ones to be overridden
+    },
+  };
+
+  if (body) {
+    configObject.body = JSON.stringify(body);
   }
-}
+  console.log(configObject);
+  return configObject;
+};
+
+const getAccessToken = () => {
+  return sessionStorage.getItem('accessToken');
+};
+
 export async function fetchBooks(){
   try{
-    const res = await fetch(`${basicBooksUrl}`, getConfigObject('GET'));
+    const res = await fetch(`${basicBooksUrl}`, getConfigObject('GET', null, {}, getAccessToken()));
     if(!res.ok){
       const result = await res.json();
       throw new Error(result.message);
@@ -26,7 +47,7 @@ export async function searchBook(bookTitle){
     return {book: {}, error: "No title provided"};
   }
   try{
-    const res = await fetch(`${basicBooksUrl}/search?title=${bookTitle}`, getConfigObject('GET'));
+    const res = await fetch(`${basicBooksUrl}/search?title=${bookTitle}`, getConfigObject('GET', null, {}, getAccessToken()));
     if(!res.ok){
       const result = await res.json();
       throw new Error(result.message);
