@@ -36,6 +36,10 @@ const fetchedBooksSlice = createSlice({
       } else {
         state.books.push(updatedBook);
       }
+    },
+    reset(state){
+      state.books = [];
+      state.firstLoad = false;
     }
   }
 });

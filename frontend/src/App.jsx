@@ -42,6 +42,7 @@ function App() {
       id: 'root',
       children:[
         {index: true, element: <HomePage/>},
+        {path: 'error', element: <ErrorPage />},
         {path: 'search', element: <SearchPage/>},
         {path: 'profile', element: <ProfilePage/>},
         {path: 'books/:bookId', element: <BookDetailsPage/>}

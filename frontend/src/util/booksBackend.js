@@ -30,7 +30,9 @@ const getAccessToken = () => {
 
 export async function fetchBooks(){
   try{
-    const res = await fetch(`${basicBooksUrl}`, getConfigObject('GET', null, {}, getAccessToken()));
+    const res = await fetch(`${basicBooksUrl}`, 
+      getConfigObject('GET', null, {}, getAccessToken())
+    );
     if(!res.ok){
       const result = await res.json();
       throw new Error(result.message);
@@ -46,14 +48,18 @@ export async function searchBook(bookTitle){
   if(!bookTitle){
     return {book: {}, error: "No title provided"};
   }
+  console.log("Searching for book:", bookTitle);
   try{
-    const res = await fetch(`${basicBooksUrl}/search?title=${bookTitle}`, getConfigObject('GET', null, {}, getAccessToken()));
+    const res = await fetch(`${basicBooksUrl}/search?title=${bookTitle}`, 
+      getConfigObject('GET', null, {}, getAccessToken())
+    );
     if(!res.ok){
       const result = await res.json();
       throw new Error(result.message);
     }
-    const book = res.json();
-    return {book, error: null};
+    const book = await res.json();
+
+    return {book: book?.books, error: null};
   } catch(e){
     console.log(e || "Server not responding" );
     return {book: {}, error: e || "Server not responding" };

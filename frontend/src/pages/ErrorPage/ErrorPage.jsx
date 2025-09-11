@@ -1,10 +1,13 @@
-import { useRouteError } from "react-router-dom";
+import { useRouteError, useLocation } from "react-router-dom";
 import ErrorLogo from "../../../public/error-logo.webp";
 import RootLayout from "../../RootLayout";
 import styles from './ErrorPage.module.css';
 import { Link } from "react-router-dom";
 export default function ErrorPage() {
-  const error = useRouteError();
+  let error = useRouteError();
+  if(!error){
+    error = useLocation();
+  }
   /*
   title: string, message: string, status: number, data: any
   */ 

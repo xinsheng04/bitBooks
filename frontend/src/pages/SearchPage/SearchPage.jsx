@@ -1,12 +1,17 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchedBooksActions } from "../../store/fetchedBooks";
 import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 import { useState, useEffect } from "react";
 import BookCard from "../../components/BookCard/BookCard.jsx";
 import styles from "./SearchPage.module.css";
 import { searchBook } from "../../util/booksBackend.js";
+import { useNavigate } from "react-router-dom";
+
 export default function SearchPage() {
   const books = useSelector(state => state.fetchedBooks.books);
+  const dispatch = useDispatch();
   const [results, setResults] = useState(books);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadSearchTerm = sessionStorage.getItem('search-item') || '';
@@ -26,16 +31,13 @@ export default function SearchPage() {
       setResults(foundBooks);
       return;
     } 
-    try{
-      const {book, error} = await searchBook(title);
-      console.log(book);
-      if (error) {
-        throw new Error(error);
-      }
-      setResults(book);
-    } catch(e){
-      console.log(e.message);
+    const {book: searchResults, error} = await searchBook(title);
+    if (error) {
+      navigate("/error", { title: "Search error", message: error });
+      return;
     }
+    dispatch(fetchedBooksActions.loadBooks({ books: searchResults, firstLoad: false }));
+    setResults(searchResults);
   }
 
   function handleClear() {
@@ -58,3 +60,4 @@ export default function SearchPage() {
     </div>
   );
 }
+

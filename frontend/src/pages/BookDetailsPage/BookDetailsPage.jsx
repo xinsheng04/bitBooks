@@ -29,19 +29,6 @@ export default function BookDetailsPage(){
   const user = useSelector(state => state.user);
   const book = useSelector(state=> state.fetchedBooks.books.find(b => b.id === bookId));
   const [isSaved, setIsSaved] = useState(user.savedBooks.some(savedBook => savedBook.id === book.id));
-  if (!book) {
-    const {error, loading} = useImportBooks({bookId});
-    if (loading) {
-      return <div style={{textAlign: 'center', marginTop: '50vh'}}>Loading...</div>;
-    }
-    if (error) {
-      throw {
-        title: "Book not found",
-        message: `No book found with ID: ${bookId}`,
-        status: 404
-      };
-    }
-  }
   function saveBookHandler(){
     addSavedBook(user.username, book.id);
     dispatch(userActions.addSavedBook(book));

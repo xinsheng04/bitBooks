@@ -16,6 +16,10 @@ async function loginUser(req, res) {
     const user = getUserData(username);
     const hashedPassword = getUserPassword(username);
 
+    if (!user || !hashedPassword) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
+
     // 3. Compare the provided password with the stored hashed password
     const isMatch = await bcrypt.compare(password, hashedPassword);
 

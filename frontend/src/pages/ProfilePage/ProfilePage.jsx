@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../store/user";
+import { fetchedBooksActions } from "../../store/fetchedBooks";
 import { Link } from "react-router-dom";
 import RandomBookLink from "../../components/RandomBookLink";
 import styles from "./ProfilePage.module.css";
@@ -12,6 +13,7 @@ export default function ProfilePage() {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("search-item");
     dispatch(userActions.logout());
+    dispatch(fetchedBooksActions.reset());
   }
 
   return (
