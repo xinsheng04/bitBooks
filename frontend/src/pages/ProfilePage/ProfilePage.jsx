@@ -19,27 +19,36 @@ export default function ProfilePage() {
   return (
     <div className={styles.profilePage}>
       <div className={styles.userInfo}>
-        <h1 className={styles.username}>👤 {user.username}</h1>
-        <p className={styles.password}>Password: {user.password}</p>
-        <button onClick={()=>handleLogout()}>Logout</button>
+        <h1>My Profile</h1>
+        <div>
+          <h1 className={styles.username}>👤 {user.username}</h1>
+          <button onClick={()=>handleLogout()}>Logout</button>
+        </div>
       </div>
 
       <div className={styles.savedBooks}>
         <h2>📚 Saved Books</h2>
-        {user.savedBooks.length > 0 ? (
-          <div className={styles.bookList}>
-            {user.savedBooks.map((book, index) => (
-              <Link key={index} to={`/books/${book.id}`} className={styles.bookItem}>
-                <span className={styles.bookTitle}>{book.title}</span>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.emptyBooks}>
-            <p>No saved books. Go get some!</p>
-            <RandomBookLink className={styles.randomBookBtn} />
-          </div>
-        )}
+        <div>
+          {user.savedBooks.length > 0 ? (
+            <table className={styles.bookList}>
+              <tbody>
+                {user.savedBooks.map((book, index) => (
+                  <Link key={index} to={`/books/${book.id}`} className={styles.bookItem}>
+                    <tr className={styles.bookRow}>
+                      <td className={styles.bookInfo}>{book.title}</td>
+                      <td className={styles.bookInfo}>{book.categories}</td>
+                    </tr>
+                  </Link>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className={styles.emptyBooks}>
+              <p>No saved books. Go get some!</p>
+              <RandomBookLink className={styles.randomBookBtn} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
