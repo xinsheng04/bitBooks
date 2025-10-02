@@ -30,18 +30,16 @@ export default function ProfilePage() {
         <h2>📚 Saved Books</h2>
         <div>
           {user.savedBooks.length > 0 ? (
-            <table className={styles.bookList}>
-              <tbody>
+            <div className={styles.bookList}>
                 {user.savedBooks.map((book, index) => (
                   <Link key={index} to={`/books/${book.id}`} className={styles.bookItem}>
-                    <tr className={styles.bookRow}>
-                      <td className={styles.bookInfo}>{book.title}</td>
-                      <td className={styles.bookInfo}>{book.categories}</td>
-                    </tr>
+                    <div className={styles.bookRow}>
+                      <div className={styles.bookInfo}>{book.title}</div>
+                      <div className={styles.bookInfo}>{book.categories}</div>
+                    </div>
                   </Link>
                 ))}
-              </tbody>
-            </table>
+            </div>
           ) : (
             <div className={styles.emptyBooks}>
               <p>No saved books. Go get some!</p>
